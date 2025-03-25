@@ -2,7 +2,7 @@ package map_example
 
 import "core:fmt"
 
-main :: proc() {
+basic :: proc() {
 	m: map[string]int // 宣言
 	m["foo"] = 1
 	m["bar"] = 2
@@ -26,5 +26,27 @@ main :: proc() {
 
 	// delete しないとメモリリーク
 	delete(m)
+}
+
+map_with_dynarr :: proc() {
+	m := make(map[string][dynamic]int)
+
+	// ゼロ値のとき、これは意味がないようだ
+	append(&m["a"], 1)
+	fmt.printfln("m[a] = %v", m["a"]) // m[a] = []
+
+	a, ok := m["a"]
+	fmt.printfln("%v:%T, %v", a, a, ok) // []:[dynamic]int, false
+	m["a"] = a
+
+	// 初期化は反映される
+	append(&m["a"], 1)
+	fmt.printfln("m[a] = %v", m["a"]) // m[a] = [1]
+}
+
+main :: proc() {
+	basic()
+	fmt.println("--------------")
+	map_with_dynarr()
 }
 
