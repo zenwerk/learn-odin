@@ -1,6 +1,7 @@
 package map_example
 
 import "core:fmt"
+import "core:slice"
 
 basic :: proc() {
 	m: map[string]int // 宣言
@@ -44,9 +45,34 @@ map_with_dynarr :: proc() {
 	fmt.printfln("m[a] = %v", m["a"]) // m[a] = [1]
 }
 
+
+map_with_dynarr_2 :: proc() {
+	m := make(map[int][dynamic]int)
+	defer delete(m)
+
+	dynarr := make([dynamic]int)
+	append(&dynarr, 1, 2, 3)
+	safe_array := slice.clone_to_dynamic(dynarr[:])
+	defer delete(safe_array)
+
+	m[0] = dynarr
+	fmt.println("map:", m) // map[0=[1, 2, 3]]
+
+	// dynarr を delete すると、マップの要素は無効になる
+	delete(dynarr)
+	fmt.println("dynarr (after delete):", dynarr) // 内部的には無効なポインタになっている可能性あり
+	fmt.println("map[0] (dynarr):", m[0]) // 不定の値が表示される
+
+	// ディープコピーしたものは影響を受けない
+	m[1] = safe_array
+	fmt.println("map[1] (safe copy):", m[1]) // [1, 2, 3]
+}
+
 main :: proc() {
 	basic()
 	fmt.println("--------------")
 	map_with_dynarr()
+	fmt.println("--------------")
+	map_with_dynarr_2()
 }
 
