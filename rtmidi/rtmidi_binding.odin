@@ -1,7 +1,7 @@
 package rtmidi_binding
 
 import "core:fmt"
-import rtmidi "odin-rtmidi"
+import rtmidi "../rtmidi/odin-rtmidi"
 
 main :: proc() {
     fmt.println("Hello, world!")
