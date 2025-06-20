@@ -1,6 +1,3 @@
-[submodule "src/odin-rtmidi"]
+[submodule "rtmidi/odin-rtmidi"]
 	path = rtmidi/odin-rtmidi
 	url = git@github.com:zenwerk/odin-rtmidi.git
-[submodule "sokol/sokol-odin"]
-	path = sokol/sokol-odin
-	url = git@github.com:floooh/sokol-odin.git
